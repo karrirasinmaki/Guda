@@ -1,13 +1,27 @@
 var GudaLoader = {
+    settings: {
+        /* htmlType: template | html */
+        htmlType: "template",
+        /* where elements will be added, undefined=body */
+        parentId: undefined,
+        debug: false
+    },
     done: undefined,
     resCount: undefined,
+    urlParentMap: {},
     addRes: function addRes(data, url) {
-        var type = url.substr(url.lastIndexOf(".")+1);
-        
+        var innerHTML = data.url || data,
+            type = url.substr(url.lastIndexOf(".")+1),
+            el,
+            parent = GudaLoader.urlParentMap[url] ? (document.getElementById(GudaLoader.urlParentMap[url]) || document.body) : 
+                    (GudaLoader.settings.parentId ? 
+                    (document.getElementById(GudaLoader.settings.parentId) || document.body) : 
+                    document.body);
+                                                
         switch(type) {
             case "js":
                 el = document.createElement("script");
-                el.type = "text/ecmascript";
+                el.type = "text/javascript";
                 break;
             case "json":
                 case "js":
@@ -15,8 +29,14 @@ var GudaLoader = {
                 el.type = "text/x-json";
                 break;
             case "html":
-                el = document.createElement("script");
-                el.type = "text/x-guda-template";
+                if(GudaLoader.settings.htmlType === "template") {
+                    el = document.createElement("script");
+                    el.type = "text/x-guda-template";
+                }
+                else if(GudaLoader.settings.htmlType === "html") {
+                    el = document.createElement("div");
+                    el.className = "guda-template";
+                }
                 break;
             case "css":
                 el = document.createElement("style");
@@ -24,22 +44,25 @@ var GudaLoader = {
                 break;
         }
         
-        el.innerHTML = data;
-        document.body.appendChild(el);
-        localStorage[url] = data;
-        GudaLoader[url] = data;
+        el.innerHTML = innerHTML;
+        parent.appendChild(el);
+        localStorage[url] = innerHTML;
+        GudaLoader[url] = innerHTML;
         GudaLoader.resCount--;
         
         if(GudaLoader.resCount <= 0 && GudaLoader.done) GudaLoader.done();
     },
-    load: function load() {
-        GudaLoader.resCount = arguments.length;
-        for(var i=0, l=arguments.length; i<l; ++i) {
-            if(localStorage[arguments[i]] && false) {
-                GudaLoader.addRes(localStorage[arguments[i]], arguments[i]);
+    load: function load(array) {
+        GudaLoader.resCount = array.length;
+        for(var i=0, l=array.length; i<l; ++i) {
+            var url = array[i].url || array[i],
+                parent = array[i].parent;
+            GudaLoader.urlParentMap[url] = parent;
+            if(!GudaLoader.settings.debug && localStorage[url]) {
+                GudaLoader.addRes(localStorage[url], url);
                 continue;
             }
-            getAjax(arguments[i]).done = GudaLoader.addRes;
+            getAjax(url).done = GudaLoader.addRes;
         }
     }
 };
