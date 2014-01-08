@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Guda.js demo site</title>
+    
+    <script src="guda.loader.js" type="text/ecmascript" id="guda-loader"></script>
+<!--    <script src="guda.js" type="text/ecmascript" id="guda"></script>-->
+</head>
+
+<body>
+    
+<div id="list">
+</div>
+
+<div id="formi">
+</div>
+    
+<div id="posts">
+</div>
+
+<script type="text/ecmascript">
+    var list, formi, posts;
+    
+    var start = function start() {
+        list = new Guda(),
+        formi = new Guda(),
+        posts = new Guda();
+        
+        list.set({
+            target: "list",
+            template: GudaLoader["list.html"],
+            components: JSON.parse(GudaLoader["list.json"])
+        });
+        
+        formi.set({
+            target: "formi",
+            template: GudaLoader["form.html"],
+            components: JSON.parse(GudaLoader["form.json"])
+        });
+        
+        posts.set({
+            target: "posts",
+            template: GudaLoader["posts.html"],
+            components: JSON.parse(GudaLoader["posts.json"])
+        });
+    };
+    
+    GudaLoader.done = start;
+    GudaLoader.load("guda.js", "list.html", "list.json", "form.html", "form.json", "posts.html", "posts.json");
+</script>
+    
+</body>
+</html>

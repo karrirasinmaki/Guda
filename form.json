@@ -1,0 +1,15 @@
+{
+"inputs": {
+    "name": "inputs",
+    "children": [
+        { "name": "inp", "children": [
+            { "name": "lbl", "innerHTML": "Yy" },
+            { "name": "value", "innerHTML": "YyVal" }
+        ]},
+        { "name": "inp", "children": [
+            { "name": "lbl", "innerHTML": "Kaa" },
+            { "name": "value", "innerHTML": "KaaVal" }
+        ]}
+    ]
+}
+}

@@ -1,0 +1,15 @@
+{
+"appName": {
+    "name": "appName",
+    "innerHTML": "Guda.js"
+},
+"featureList": {
+    "name": "featureList",
+    "innerHTML": "FeatureList",
+    "children": [
+        {"name": "name", "innerHTML": "1"},
+        {"name": "name", "innerHTML": "2"},
+        {"name": "name", "innerHTML": "<b>3</b>"}
+    ]   
+}
+}

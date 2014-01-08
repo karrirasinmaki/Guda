@@ -1,0 +1,10 @@
+{
+"posts": {
+    "name": "posts",
+    "children": [
+        {
+            "pic": "url"
+        }
+    ]
+}
+}
